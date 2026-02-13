@@ -8,8 +8,8 @@ const PORT = process.env.PORT || 3000;
 // Enable compression
 app.use(compression());
 
-// Serve static files from Build directory
-app.use(express.static('Build', {
+// Serve all static files from root directory (includes Build, TemplateData, etc.)
+app.use(express.static('.', {
   setHeaders: (res, filePath) => {
     // Set proper MIME types for Unity WebGL files
     if (filePath.endsWith('.wasm.br')) {
@@ -33,11 +33,6 @@ app.use(express.static('Build', {
     }
   }
 }));
-
-// Serve index.html for root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
 
 app.listen(PORT, () => {
   console.log(`Unity WebGL server running on port ${PORT}`);
